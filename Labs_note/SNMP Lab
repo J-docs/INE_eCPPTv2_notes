@@ -1,0 +1,62 @@
+SNMP Lab
+----------------------------------------------------------------------------
+
+Tagrget: demo.ine.local
+10.5.23.123
+
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+3389/tcp open  ms-wbt-server
+
+PORT     STATE SERVICE       VERSION
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds  Windows Server 2019 Datacenter 17763 microsoft-ds
+3389/tcp open  ms-wbt-server Microsoft Terminal Services
+| rdp-ntlm-info: 
+|   Target_Name: ATTACKDEFENSE
+|   NetBIOS_Domain_Name: ATTACKDEFENSE
+|   NetBIOS_Computer_Name: ATTACKDEFENSE
+|   DNS_Domain_Name: AttackDefense
+|   DNS_Computer_Name: AttackDefense
+|   Product_Version: 10.0.17763
+|_  System_Time: 2023-12-24T19:32:12+00:00
+| ssl-cert: Subject: commonName=AttackDefense
+| Not valid before: 2023-12-23T19:14:26
+|_Not valid after:  2024-06-23T19:14:26
+|_ssl-date: 2023-12-24T19:32:21+00:00; 0s from scanner time.
+
+Host script results:
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_smb2-time: Protocol negotiation failed (SMB2)
+| smb-os-discovery:
+|   OS: Windows Server 2019 Datacenter 17763 (Windows Server 2019 Datacenter 6.3)
+|   Computer name: AttackDefense
+|   NetBIOS computer name: ATTACKDEFENSE\x00
+|   Workgroup: WORKGROUP\x00
+|_  System time: 2023-12-24T19:32:16+00:00
+|_clock-skew: mean: 0s, deviation: 2s, median: 0s
+
+
+[+] UDP can
+
+PORT    STATE SERVICE
+161/udp open  snmp
+
+| snmp-win32-users: 
+|   Administrator
+|   DefaultAccount
+|   Guest
+|   WDAGUtilityAccount
+|_  admin
+
+
+[445][smb] host: demo.ine.local   login: Administrator   password: elizabeth
+[445][smb] host: demo.ine.local   login: admin   password: tinkerbell
+

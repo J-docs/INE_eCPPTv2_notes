@@ -1,0 +1,75 @@
+SMB Lab
+----------------------------------------
+demo.ine.local
+10.5.26.28
+-----------------------
+demo1.ine.local
+10.5.26.114
+-------------------------------
+
+PORT      STATE SERVICE
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+3389/tcp  open  ms-wbt-server
+49152/tcp open  unknown
+49153/tcp open  unknown
+49154/tcp open  unknown
+49155/tcp open  unknown
+49160/tcp open  unknown
+49161/tcp open  unknown
+
+
+445/tcp open  microsoft-ds Windows Server 2012 R2 Standard 9600 microsoft-ds
+
+Host script results:
+| smb2-security-mode: 
+|   3.0.2: 
+|_    Message signing enabled but not required
+| smb-os-discovery: 
+|   OS: Windows Server 2012 R2 Standard 9600 (Windows Server 2012 R2 Standard 6.3)
+|   OS CPE: cpe:/o:microsoft:windows_server_2012::-
+|   Computer name: attackdefense
+|   NetBIOS computer name: ATTACKDEFENSE\x00
+|   Workgroup: WORKGROUP\x00
+|_  System time: 2023-12-23T20:29:44+00:00
+| smb2-time: 
+|   date: 2023-12-23T20:29:45
+|_  start_date: 2023-12-23T20:15:01
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_clock-skew: mean: 1s, deviation: 1s, median: 0s
+
+Host script results:
+| smb-enum-users: 
+|   ATTACKDEFENSE\admin (RID: 1009)
+|     Flags:       Normal user account, Password does not expire
+|   ATTACKDEFENSE\Administrator (RID: 500)
+|     Description: Built-in account for administering the computer/domain
+|     Flags:       Normal user account, Password does not expire
+|   ATTACKDEFENSE\Guest (RID: 501)
+|     Description: Built-in account for guest access to the computer/domain
+|     Flags:       Account disabled, Normal user account, Password does not expire, Password not required
+|   ATTACKDEFENSE\root (RID: 1010)
+|_    Flags:       Normal user account, Password does not expire
+
+
+Password Bruteforce
+---------------------------------------------
+[445][smb] host: demo.ine.local   login: admin   password: tinkerbell
+[445][smb] host: demo.ine.local   login: Administrator   password: password1
+[445][smb] host: demo.ine.local   login: root   password: elizabeth
+
+-----------------------------------------------------------------------------
+demo1.ine.local
+10.5.26.114
+------------------------------------------------------------------------------
+
+PORT    STATE SERVICE      VERSION
+445/tcp open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+Service Info: OS: Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+--------x-------------------x--------------------x--------------------x------------x--

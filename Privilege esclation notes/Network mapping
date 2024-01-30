@@ -1,0 +1,45 @@
+INE-Privilege Escalation Notes
+----------------------------------------------
+
+[+] Mapping the Networking
+
+=> To see active network connections
+	C:\> netstat -ano
+
+=> To know the NIC info
+	Win:
+		C:\> ipconfig
+	
+	Linux:
+		# ifconfig
+
+=> For route info
+	win:
+		C:\> route print
+
+	Linux:
+		# route -v
+
+=> Arp table 
+	win:
+		C:\> arp -a
+
+=> Display connected DNS information
+	win:
+		C:\> ipconfig /displaydns
+
+=> Display all host network connections
+	# netstat
+
+=> Metasploit module for scaning the network
+	
+	meterpreter> run arp_scanner -r <IP>/<submet>
+
+=> Detecting alive hosts in network
+	
+	msf> use post/multi/gather/ping_sweep
+		> set RHOSTS <IP>/<SUBMENT>
+		> set session <ID>
+
+=> for Network enumeration
+	meterpreter> run netenum -h

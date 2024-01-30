@@ -1,0 +1,32 @@
+Nessus
+-------------------------------
+target: 
+192.84.213.3     demo.ine.local
+192.84.213.4     demossl.ine.local
+192.84.213.5     webserver.ine.local
+
+
+
+[+]  `Nmap scan report for demo.ine.local (192.84.213.3)
+
+	PORT     STATE SERVICE VERSION
+	80/tcp   open  http    Apache httpd 2.4.7 ((Ubuntu))
+	3306/tcp open  mysql   MySQL (blocked - too many connection errors)
+
+
+[+] Nmap scan report for demossl.ine.local (192.84.213.4)
+
+	PORT    STATE SERVICE  VERSION
+	22/tcp  open  ssh      OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+	443/tcp open  ssl/http nginx 1.11.13
+
+	elliot&password=sup3rs3cur3p4ssw0rd
+	username=admin&password=thisistherealadmin
+	username=amanda&password=rockstar
+
+[+] Nmap scan report for webserver.ine.local (192.84.213.5)
+
+	PORT   STATE SERVICE VERSION
+	80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+
+

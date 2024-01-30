@@ -1,0 +1,115 @@
+DNS and SMB Relay Attack
+-------------------------------------------
+
+my Ip : 172.16.5.101
+
+[+] target
+	172.16.5.1
+	172.16.5.5
+	172.16.5.10
+
+[+] Nmap
+	
+[+] Nmap scan report for 172.16.5.1
+
+	PORT     STATE SERVICE       VERSION
+	22/tcp   open  ssh           OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+	3389/tcp open  ms-wbt-server xrdp
+
+[+] Nmap scan report for 172.16.5.5
+
+	PORT      STATE SERVICE            VERSION
+	22/tcp    open  ssh                OpenSSH 6.7 (protocol 2.0)
+	135/tcp   open  msrpc              Microsoft Windows RPC
+	139/tcp   open  netbios-ssn        Microsoft Windows netbios-ssn
+	445/tcp   open  microsoft-ds       Microsoft Windows 7 - 10 microsoft-ds (workgroup: WORKGROUP)
+	3389/tcp  open  ssl/ms-wbt-server?
+	49152/tcp open  msrpc              Microsoft Windows RPC
+	49153/tcp open  msrpc              Microsoft Windows RPC
+	49154/tcp open  msrpc              Microsoft Windows RPC
+	49155/tcp open  msrpc              Microsoft Windows RPC
+	49156/tcp open  msrpc              Microsoft Windows RPC
+	49157/tcp open  msrpc              Microsoft Windows RPC
+	MAC Address: 08:00:27:8F:79:CC (Oracle VirtualBox virtual NIC)
+	Service Info: Host: IE8WIN7; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+[+] Nmap scan report for 172.16.5.10
+
+	PORT      STATE SERVICE            VERSION
+	135/tcp   open  msrpc              Microsoft Windows RPC
+	139/tcp   open  netbios-ssn        Microsoft Windows netbios-ssn
+	445/tcp   open  microsoft-ds       Windows 7 Enterprise 7601 Service Pack 1 microsoft-ds (workgroup: WORKGROUP)
+	3389/tcp  open  ssl/ms-wbt-server?
+	| ssl-cert: Subject: commonName=fileserver
+	| Not valid before: 2022-01-21T00:00:06
+	|_Not valid after:  2022-07-23T00:00:06
+	|_ssl-date: 2022-01-22T00:30:51+00:00; 0s from scanner time.
+	5800/tcp  open  vnc-http           TightVNC (user: fileserver; VNC TCP port: 5900)
+	|_http-title: TightVNC desktop [fileserver]
+	5900/tcp  open  vnc                VNC (protocol 3.8)
+	| vnc-info: 
+	|   Protocol version: 3.8
+	|   Security types: 
+	|     VNC Authentication (2)
+	|     Tight (16)
+	|   Tight auth subtypes: 
+	|_    STDV VNCAUTH_ (2)
+	49152/tcp open  msrpc              Microsoft Windows RPC
+	49153/tcp open  msrpc              Microsoft Windows RPC
+	49154/tcp open  msrpc              Microsoft Windows RPC
+	49155/tcp open  msrpc              Microsoft Windows RPC
+	49156/tcp open  msrpc              Microsoft Windows RPC
+	49157/tcp open  msrpc              Microsoft Windows RPC
+	MAC Address: 08:00:27:7F:4F:D8 (Oracle VirtualBox virtual NIC)
+	Device type: general purpose
+	Running: Microsoft Windows 7|2008|8.1
+	OS CPE: cpe:/o:microsoft:windows_7::- cpe:/o:microsoft:windows_7::sp1 cpe:/o:microsoft:windows_server_2008::sp1 cpe:/o:microsoft:windows_server_2008:r2 cpe:/o:microsoft:windows_8 cpe:/o:microsoft:windows_8.1
+	OS details: Microsoft Windows 7 SP0 - SP1, Windows Server 2008 SP1, Windows Server 2008 R2, Windows 8, or Windows 8.1 Update 1
+	Network Distance: 1 hop
+	Service Info: Host: FILESERVER; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+	Host script results:
+	|_clock-skew: mean: 1h59m59s, deviation: 4h00m00s, median: 0s
+	|_nbstat: NetBIOS name: FILESERVER, NetBIOS user: <unknown>, NetBIOS MAC: 08:00:27:7f:4f:d8 (Oracle VirtualBox virtual NIC)
+	| smb-os-discovery: 
+	|   OS: Windows 7 Enterprise 7601 Service Pack 1 (Windows 7 Enterprise 6.1)
+	|   OS CPE: cpe:/o:microsoft:windows_7::sp1
+	|   Computer name: fileserver
+	|   NetBIOS computer name: FILESERVER\x00
+	|   Workgroup: WORKGROUP\x00
+	|_  System time: 2022-01-21T16:30:45-08:00
+	| smb-security-mode: 
+	|   account_used: guest
+	|   authentication_level: user
+	|   challenge_response: supported
+	|_  message_signing: disabled (dangerous, but default)
+	| smb2-security-mode: 
+	|   2.02: 
+	|_    Message signing enabled but not required
+	| smb2-time: 
+	|   date: 2022-01-22T00:30:45
+	|_  start_date: 2022-01-27T14:14:56
+
+	[+] smb user
+	smb-enum-shares
+	ORT    STATE SERVICE
+	139/tcp open  netbios-ssn
+	MAC Address: 08:00:27:7F:4F:D8 (Oracle VirtualBox virtual NIC)
+
+	Host script results:
+	| smb-enum-shares: 
+	|   note: ERROR: Enumerating shares failed, guessing at common ones (NT_STATUS_ACCESS_DENIED)
+	|   account_used: <blank>
+	|   \\172.16.5.10\ADMIN$: 
+	|     warning: Couldn't get details for share: NT_STATUS_ACCESS_DENIED
+	|     Anonymous access: <none>
+	|   \\172.16.5.10\C$: 
+	|     warning: Couldn't get details for share: NT_STATUS_ACCESS_DENIED
+	|     Anonymous access: <none>
+	|   \\172.16.5.10\IPC$: 
+	|     warning: Couldn't get details for share: NT_STATUS_ACCESS_DENIED
+	|_    Anonymous access: READ
+
+	Nmap done: 1 IP address (1 host up) scanned in 15.84 seconds
+
+

